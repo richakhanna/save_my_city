@@ -7,10 +7,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import com.save.mycity.R;
 import com.save.mycity.ui.adapter.CategoryAdapter;
-import java.util.ArrayList;
 
 public class CategoryListFragment extends Fragment {
 
@@ -19,7 +19,7 @@ public class CategoryListFragment extends Fragment {
 
   private String mParam1;
   private String mParam2;
-  private ArrayList<String> mCategoryList;
+  private String[] mCategoryList;
   private ListView mListView;
   private CategoryAdapter mCategoryAdapter;
 
@@ -40,6 +40,7 @@ public class CategoryListFragment extends Fragment {
 
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+     mCategoryList = getResources().getStringArray(R.array.category_list);
     if (getArguments() != null) {
       mParam1 = getArguments().getString(ARG_PARAM1);
       mParam2 = getArguments().getString(ARG_PARAM2);
@@ -51,12 +52,7 @@ public class CategoryListFragment extends Fragment {
     // Inflate the layout for this fragment
     View view = inflater.inflate(R.layout.fragment_category_list, container, false);
     mListView = (ListView) view.findViewById(R.id.listview_route);
-    mCategoryList = new ArrayList<String>();
-    mCategoryList.add("Electricity");
-    mCategoryList.add("Drainage");
-    mCategoryList.add("Filth");
-    mCategoryList.add("Hazard");
-    mCategoryList.add("Road Lamp");
+    mListView.setOnItemClickListener(mItemClickListener);
     mCategoryAdapter = new CategoryAdapter(getActivity(), mCategoryList);
     mListView.setAdapter(mCategoryAdapter);
     return view;
@@ -82,6 +78,12 @@ public class CategoryListFragment extends Fragment {
     super.onDetach();
     mListener = null;
   }
+
+  AdapterView.OnItemClickListener mItemClickListener = new AdapterView.OnItemClickListener() {
+    @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+    }
+  };
 
   public interface OnFragmentInteractionListener {
     void onFragmentInteraction(Uri uri);

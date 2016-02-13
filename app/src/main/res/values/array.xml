@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <string-array name="category_list">
+    <item>Electricity</item>
+    <item>Drainage</item>
+    <item>Filth</item>
+    <item>Hazard</item>
+    <item>Road Lamp</item>
+  </string-array>
+</resources>
