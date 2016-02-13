@@ -24,12 +24,12 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:textStyle="bold"
-       android:text="Clean City"
+       android:text="Clean My City"
         />
     </RelativeLayout>
 
     <ImageView
-        android:layout_width="20dp"
+        android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_gravity="bottom|center_horizontal"
         android:layout_alignParentBottom="true"
