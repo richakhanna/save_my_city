@@ -1,14 +1,12 @@
 package com.save.mycity.ui.fragment;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import android.widget.Toast;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -16,21 +14,21 @@ import com.google.android.gms.maps.SupportMapFragment;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link MyCityMap.OnFragmentInteractionListener} interface
+ * {@link MyCityMapFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link MyCityMap#newInstance} factory method to
+ * Use the {@link MyCityMapFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MyCityMap extends SupportMapFragment implements OnMapReadyCallback {
+public class MyCityMapFragment extends SupportMapFragment implements OnMapReadyCallback {
 
   private OnFragmentInteractionListener mListener;
 
-  public static MyCityMap newInstance() {
-    MyCityMap fragment = new MyCityMap();
+  public static MyCityMapFragment newInstance() {
+    MyCityMapFragment fragment = new MyCityMapFragment();
     return fragment;
   }
 
-  public MyCityMap() {
+  public MyCityMapFragment() {
   }
 
   @Override public void onCreate(Bundle savedInstanceState) {
@@ -54,7 +52,6 @@ public class MyCityMap extends SupportMapFragment implements OnMapReadyCallback 
   }
 
   @Override public void onMapReady(GoogleMap googleMap) {
-    Toast.makeText(getActivity(),"Map Created",Toast.LENGTH_SHORT).show();
   }
 
   /**

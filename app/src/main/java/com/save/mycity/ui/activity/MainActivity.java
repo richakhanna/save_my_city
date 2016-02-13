@@ -1,10 +1,7 @@
 package com.save.mycity.ui.activity;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -14,7 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import com.save.mycity.R;
-import com.save.mycity.ui.fragment.MyCityMap;
+import com.save.mycity.ui.fragment.MyCityMapFragment;
 
 public class MainActivity extends AppCompatActivity
     implements NavigationView.OnNavigationItemSelectedListener {
@@ -41,7 +38,7 @@ public class MainActivity extends AppCompatActivity
 
     // MapFragment Default
     fragmentManager.beginTransaction()
-        .replace(R.id.main_container, MyCityMap.newInstance())
+        .replace(R.id.main_container, MyCityMapFragment.newInstance())
         .commit();
   }
 
@@ -75,7 +72,7 @@ public class MainActivity extends AppCompatActivity
 
     if (id == R.id.nav_report) {
       fragmentManager.beginTransaction()
-          .replace(R.id.main_container, MyCityMap.newInstance())
+          .replace(R.id.main_container, MyCityMapFragment.newInstance())
           .commit();
     } else if (id == R.id.nav_gallery) {
 
