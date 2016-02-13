@@ -4,18 +4,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_gravity="center">
+  <RelativeLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+      android:layout_gravity="center">
     <ImageView
         android:id="@+id/splash_img"
         android:layout_width="100dp"
         android:layout_height="60dp"
         android:layout_gravity="center"
         android:background="@drawable/clean_city_splash"
-        />
+    />
 
     <TextView
         android:layout_below="@id/splash_img"
@@ -24,24 +24,24 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:textStyle="bold"
-       android:text="Clean My City"
-        />
-    </RelativeLayout>
+        android:text="Clean My City"
+    />
+  </RelativeLayout>
 
-    <ImageView
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_gravity="bottom|center_horizontal"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="60dp"
-        android:background="@drawable/location_splash"
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center_horizontal"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="30dp"
-        android:text="Getting Your Location..."
-        />
+  <ImageView
+      android:layout_width="40dp"
+      android:layout_height="40dp"
+      android:layout_gravity="bottom|center_horizontal"
+      android:layout_alignParentBottom="true"
+      android:layout_marginBottom="60dp"
+      android:background="@drawable/location_splash"
+  />
+  <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="bottom|center_horizontal"
+      android:layout_alignParentBottom="true"
+      android:layout_marginBottom="30dp"
+      android:text="Getting Your Location..."
+  />
 </FrameLayout>

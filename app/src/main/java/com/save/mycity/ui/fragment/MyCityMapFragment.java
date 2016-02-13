@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.FrameLayout;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -41,7 +40,7 @@ public class MyCityMapFragment extends SupportMapFragment implements OnMapReadyC
       Bundle savedInstanceState) {
     View mapView = super.onCreateView(inflater, container, savedInstanceState);
     View view = inflater.inflate(R.layout.fragment_my_city_map, container, false);
-    ((FrameLayout)view.findViewById(R.id.main_container)).addView(mapView,0);
+    ((FrameLayout) view.findViewById(R.id.map_container)).addView(mapView, 0);
     getMapAsync(this);
     return view;
   }
@@ -63,7 +62,7 @@ public class MyCityMapFragment extends SupportMapFragment implements OnMapReadyC
    * fragment to allow an interaction in this fragment to be communicated
    * to the activity and potentially other fragments contained in that
    * activity.
-   * <p>
+   * <p/>
    * See the Android Training lesson <a href=
    * "http://developer.android.com/training/basics/fragments/communicating.html"
    * >Communicating with Other Fragments</a> for more information.
