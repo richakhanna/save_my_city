@@ -80,7 +80,7 @@ public class MyCityMapFragment extends SupportMapFragment
     } catch (IOException e) {
       e.printStackTrace();
     }
-    if (addresses != null) {
+    if (addresses != null && addresses.size()>0) {
       String address = addresses.get(0).getAddressLine(0);
       String state = addresses.get(0).getAdminArea();
       String country = addresses.get(0).getCountryName();
@@ -163,14 +163,14 @@ public class MyCityMapFragment extends SupportMapFragment
       case R.id.fab:
         Toast.makeText(getActivity(), "Report incident button pressed", Toast.LENGTH_LONG).show();
         if (mListener != null) {
-          mListener.openReportScreenIfAlreadyLoggedIn();
+          mListener.openLoginFragment();
         }
         break;
     }
   }
 
   public interface OnReportIncidentClickedListener {
-    void openReportScreenIfAlreadyLoggedIn();
+    void openLoginFragment();
   }
 
   public boolean moveToLocation(LatLng location) {

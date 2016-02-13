@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity
     return true;
   }
 
-  @Override public void openReportScreenIfAlreadyLoggedIn() {
+  @Override public void openLoginFragment() {
     //replace the MyCityMap Fragment with Login fragment
     fragmentManager.beginTransaction()
         .replace(R.id.main_fragment_container, LoginFragment.newInstance("hello", "world"))
@@ -121,6 +121,7 @@ public class MainActivity extends AppCompatActivity
 
   @Override public void onLoginSuccess() {
     //replace the Login Fragment with CategoryList fragment
+    fragmentManager.popBackStack();
     fragmentManager.beginTransaction()
         .replace(R.id.main_fragment_container, CategoryListFragment.newInstance("hello", "world"))
         .addToBackStack(null)
