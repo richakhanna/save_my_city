@@ -7,9 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.FrameLayout;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.save.mycity.R;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -37,7 +39,9 @@ public class MyCityMapFragment extends SupportMapFragment implements OnMapReadyC
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
-    View view = super.onCreateView(inflater, container, savedInstanceState);
+    View mapView = super.onCreateView(inflater, container, savedInstanceState);
+    View view = inflater.inflate(R.layout.fragment_my_city_map, container, false);
+    ((FrameLayout)view.findViewById(R.id.main_container)).addView(mapView,0);
     getMapAsync(this);
     return view;
   }
