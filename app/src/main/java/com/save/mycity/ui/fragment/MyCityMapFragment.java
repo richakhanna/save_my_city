@@ -30,7 +30,7 @@ public class MyCityMapFragment extends SupportMapFragment implements OnMapReadyC
   private static final int DEFAULT_MAP_ZOOM_LEVEL = 15;
   private static final String TAG = MyCityMapFragment.class.getSimpleName();
   private OnFragmentInteractionListener mListener;
-  private GoogleMap googleMap;
+  private GoogleMap mGoogleMap;
   private double mLatitude;
   private double mLongitude;
   private LatLng mLocation = null;
@@ -75,11 +75,12 @@ public class MyCityMapFragment extends SupportMapFragment implements OnMapReadyC
   }
 
   @Override public void onMapReady(GoogleMap googleMap) {
-    this.googleMap = googleMap;
+    mGoogleMap = googleMap;
+    mGoogleMap.setMyLocationEnabled(true);
     if(mLocation != null) {
       CameraPosition newCameraPosition =
           new CameraPosition.Builder().target(mLocation).zoom(DEFAULT_MAP_ZOOM_LEVEL).build();
-      googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(newCameraPosition));
+      mGoogleMap.moveCamera(CameraUpdateFactory.newCameraPosition(newCameraPosition));
     }
   }
 
@@ -97,21 +98,20 @@ public class MyCityMapFragment extends SupportMapFragment implements OnMapReadyC
   }
 
   public boolean moveToLocation(LatLng location) {
-    if (googleMap != null) {
-      googleMap.setMyLocationEnabled(true);
+    if (mGoogleMap != null) {
       CameraPosition newCameraPosition =
           new CameraPosition.Builder().target(location).zoom(DEFAULT_MAP_ZOOM_LEVEL).build();
-      googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(newCameraPosition));
+      mGoogleMap.moveCamera(CameraUpdateFactory.newCameraPosition(newCameraPosition));
       return true;
     }
     return false;
   }
 
   public boolean animateToLocation(LatLng location) {
-    if (googleMap != null) {
+    if (mGoogleMap != null) {
       CameraPosition newCameraPosition =
           new CameraPosition.Builder().target(location).zoom(DEFAULT_MAP_ZOOM_LEVEL).build();
-      googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(newCameraPosition));
+      mGoogleMap.animateCamera(CameraUpdateFactory.newCameraPosition(newCameraPosition));
       return true;
     }
     return false;
