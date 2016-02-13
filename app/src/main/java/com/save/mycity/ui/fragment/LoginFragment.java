@@ -88,31 +88,28 @@ public class LoginFragment extends Fragment {
       @Override public void onSuccess(LoginResult loginResult) {
         Toast.makeText(getActivity(), "Fb login success", Toast.LENGTH_LONG).show();
         // App code
-        if (mListener != null) {
+        GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(),
+            new GraphRequest.GraphJSONObjectCallback() {
+              @Override public void onCompleted(JSONObject object, GraphResponse response) {
+                // Application code
+                try {
+                  String email = object.getString("email");
+                  String name = object.getString("name");
+                  Log.v(LOGTAG, email);
+                  Log.v(LOGTAG, name);
+                  mSharedPreferences.edit().putString(Constants.USER_EMAIL, email).apply();
+                  mSharedPreferences.edit().putString(Constants.USER_NAME, name).apply();
 
-          GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(),
-              new GraphRequest.GraphJSONObjectCallback() {
-                @Override public void onCompleted(JSONObject object, GraphResponse response) {
-                  // Application code
-                  try {
-                    String email = object.getString("email");
-                    String name = object.getString("name");
-                    Log.v(LOGTAG, email);
-                    Log.v(LOGTAG, name);
-                    mSharedPreferences.edit().putString(Constants.USER_EMAIL, email).apply();
-                    mSharedPreferences.edit().putString(Constants.USER_NAME, name).apply();
-
-                    mListener.onLoginSuccess();
-                  } catch (JSONException e) {
-                    Log.e(LOGTAG, e.getMessage());
-                  }
+                  mListener.onLoginSuccess();
+                } catch (JSONException e) {
+                  Log.e(LOGTAG, e.getMessage());
                 }
-              });
-          Bundle parameters = new Bundle();
-          parameters.putString("fields", "name,email");
-          request.setParameters(parameters);
-          request.executeAsync();
-        }
+              }
+            });
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "name,email");
+        request.setParameters(parameters);
+        request.executeAsync();
       }
 
       @Override public void onCancel() {
