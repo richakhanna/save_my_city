@@ -93,10 +93,9 @@ public class MyCityMapFragment extends SupportMapFragment
     switch (v.getId()) {
       case R.id.fab:
         Toast.makeText(getActivity(), "Report incident button pressed", Toast.LENGTH_LONG).show();
-        bringFragmentFromBelow();
-        //if (mListener != null) {
-        //  mListener.openReportScreenIfAlreadyLoggedIn();
-        //}
+        if (mListener != null) {
+          mListener.openReportScreenIfAlreadyLoggedIn();
+        }
         break;
     }
   }
