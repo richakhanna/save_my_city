@@ -1,17 +1,17 @@
 package com.save.mycity.ui.fragment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import com.save.mycity.R;
-import com.save.mycity.ui.activity.CreateIssueActivity;
+import com.save.mycity.ui.activity.CreateIssueFragment;
 import com.save.mycity.ui.adapter.CategoryAdapter;
 
 public class CategoryListFragment extends Fragment {
@@ -85,9 +85,14 @@ public class CategoryListFragment extends Fragment {
 
   AdapterView.OnItemClickListener mItemClickListener = new AdapterView.OnItemClickListener() {
     @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-      Intent intent = new Intent(mContext, CreateIssueActivity.class);
-      intent.putExtra("category_tag",mCategoryList[position]);
-      startActivity(intent);
+      //Intent intent = new Intent(mContext, CreateIssueActivity.class);
+      //intent.putExtra("category_tag", mCategoryList[position]);
+      //startActivity(intent);
+      FragmentManager fragmentManager = getFragmentManager();
+      fragmentManager.beginTransaction()
+          .replace(R.id.main_fragment_container, CreateIssueFragment.newInstance())
+          .addToBackStack(null)
+          .commit();
     }
   };
 
