@@ -2,8 +2,10 @@ package com.save.mycity.ui.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,14 +15,19 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.Profile;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.save.mycity.R;
 import com.save.mycity.util.Constants;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class LoginFragment extends Fragment {
 
+  private static final String LOGTAG = LoginFragment.class.getSimpleName();
   private static final String ARG_PARAM1 = "param1";
   private static final String ARG_PARAM2 = "param2";
   private String mParam1;
@@ -29,9 +36,9 @@ public class LoginFragment extends Fragment {
   private AccessToken accessToken;
   private Profile mProfile;
 
-
   private OnFbLoginListener mListener;
   private CallbackManager callbackManager;
+  private SharedPreferences mSharedPreferences;
 
   public static LoginFragment newInstance(String param1, String param2) {
     LoginFragment fragment = new LoginFragment();
@@ -52,6 +59,8 @@ public class LoginFragment extends Fragment {
       mParam1 = getArguments().getString(ARG_PARAM1);
       mParam2 = getArguments().getString(ARG_PARAM2);
     }
+    mSharedPreferences = getContext().getApplicationContext()
+        .getSharedPreferences(Constants.PREFERENCE_NAME, Context.MODE_PRIVATE);
   }
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -61,12 +70,14 @@ public class LoginFragment extends Fragment {
     FacebookSdk.sdkInitialize(getContext().getApplicationContext());
     callbackManager = CallbackManager.Factory.create();
     mLoginButton = (LoginButton) view.findViewById(R.id.login_button);
+    mLoginButton.setReadPermissions("email");
     // If using in a fragment
     mLoginButton.setFragment(this);
 
     // If the access token is available already assign it.
     accessToken = AccessToken.getCurrentAccessToken();
     mProfile = Profile.getCurrentProfile();
+
     if (accessToken != null && mListener != null) {
       Toast.makeText(getActivity(), "Already Logged In", Toast.LENGTH_LONG).show();
       mListener.onLoginSuccess();
@@ -78,7 +89,29 @@ public class LoginFragment extends Fragment {
         Toast.makeText(getActivity(), "Fb login success", Toast.LENGTH_LONG).show();
         // App code
         if (mListener != null) {
-          mListener.onLoginSuccess();
+
+          GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(),
+              new GraphRequest.GraphJSONObjectCallback() {
+                @Override public void onCompleted(JSONObject object, GraphResponse response) {
+                  // Application code
+                  try {
+                    String email = object.getString("email");
+                    String name = object.getString("name");
+                    Log.v(LOGTAG, email);
+                    Log.v(LOGTAG, name);
+                    mSharedPreferences.edit().putString(Constants.USER_EMAIL, email).apply();
+                    mSharedPreferences.edit().putString(Constants.USER_NAME, name).apply();
+
+                    mListener.onLoginSuccess();
+                  } catch (JSONException e) {
+                    Log.e(LOGTAG, e.getMessage());
+                  }
+                }
+              });
+          Bundle parameters = new Bundle();
+          parameters.putString("fields", "name,email");
+          request.setParameters(parameters);
+          request.executeAsync();
         }
       }
 

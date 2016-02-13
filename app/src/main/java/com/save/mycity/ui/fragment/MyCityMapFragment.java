@@ -42,8 +42,8 @@ public class MyCityMapFragment extends SupportMapFragment
   private OnReportIncidentClickedListener mListener;
   private FloatingActionButton mBtnReportIncident;
   private HashMap<Marker, MarkerData> markerDataMap;
-  private SharedPreferences sharedpreferences;
   private Context mContext;
+  private SharedPreferences mSharedPreferences;
 
   public static MyCityMapFragment newInstance(double latitude, double longitude) {
     MyCityMapFragment fragment = new MyCityMapFragment();
@@ -59,8 +59,8 @@ public class MyCityMapFragment extends SupportMapFragment
 
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    sharedpreferences =
-        getActivity().getSharedPreferences(Constants.SHARED_PREF, Context.MODE_PRIVATE);
+    mSharedPreferences = getContext().getApplicationContext()
+        .getSharedPreferences(Constants.PREFERENCE_NAME, Context.MODE_PRIVATE);
     mLatitude = getArguments().getDouble(Constants.LATITUDE);
     mLongitude = getArguments().getDouble(Constants.LONGITUDE);
     saveAddress();
@@ -71,20 +71,20 @@ public class MyCityMapFragment extends SupportMapFragment
 
   private void saveAddress() {
     Geocoder geocoder;
-    List<Address> addresses =null;
+    List<Address> addresses = null;
     geocoder = new Geocoder(mContext, Locale.getDefault());
     try {
       addresses = geocoder.getFromLocation(mLatitude, mLongitude, 1);
-      Log.d(TAG,"address " + addresses);
+      Log.d(TAG, "address " + addresses);
     } catch (IOException e) {
       e.printStackTrace();
     }
-    if(addresses != null) {
+    if (addresses != null) {
       String address = addresses.get(0).getAddressLine(0);
       String state = addresses.get(0).getAdminArea();
       String country = addresses.get(0).getCountryName();
-      address = address +"," +state +","+country;
-      SharedPreferences.Editor editor  = sharedpreferences.edit();
+      address = address + "," + state + "," + country;
+      SharedPreferences.Editor editor = mSharedPreferences.edit();
       editor.putString(Constants.ADDRESS, address);
       editor.commit();
     }
