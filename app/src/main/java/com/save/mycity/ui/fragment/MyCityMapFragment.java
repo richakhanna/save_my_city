@@ -14,6 +14,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.save.mycity.R;
+import com.save.mycity.util.Constants;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,9 +29,15 @@ public class MyCityMapFragment extends SupportMapFragment implements OnMapReadyC
   private static final int DEFAULT_MAP_ZOOM_LEVEL = 15;
   private OnFragmentInteractionListener mListener;
   private GoogleMap googleMap;
+  private double mLatitude;
+  private double mLongitude;
 
-  public static MyCityMapFragment newInstance() {
+  public static MyCityMapFragment newInstance(double latitude ,double longitude) {
     MyCityMapFragment fragment = new MyCityMapFragment();
+    Bundle bundle = new Bundle();
+    bundle.putDouble(Constants.LATITUDE,latitude);
+    bundle.putDouble(Constants.LONGITUDE,longitude);
+    fragment.setArguments(bundle);
     return fragment;
   }
 

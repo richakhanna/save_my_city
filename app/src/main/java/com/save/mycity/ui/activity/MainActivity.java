@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import com.save.mycity.R;
 import com.save.mycity.ui.fragment.MyCityMapFragment;
+import com.save.mycity.util.Constants;
 
 public class MainActivity extends AppCompatActivity
     implements NavigationView.OnNavigationItemSelectedListener {
@@ -35,10 +36,10 @@ public class MainActivity extends AppCompatActivity
     NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
     navigationView.setNavigationItemSelectedListener(this);
     fragmentManager = getSupportFragmentManager();
-
     // MapFragment Default
     fragmentManager.beginTransaction()
-        .replace(R.id.main_fragment_container, MyCityMapFragment.newInstance())
+        .replace(R.id.main_fragment_container, MyCityMapFragment.newInstance(getIntent().getDoubleExtra(
+            Constants.LATITUDE,0.0),getIntent().getDoubleExtra(Constants.LONGITUDE,0.0)))
         .commit();
   }
 
