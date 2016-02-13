@@ -7,4 +7,6 @@ public interface Constants {
 
   String LATITUDE = "lat";
   String LONGITUDE = "long";
+  String PREF_LOGIN = "login";
+  String SHARED_PREF = "shared";
 }

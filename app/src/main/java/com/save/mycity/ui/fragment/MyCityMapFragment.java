@@ -1,6 +1,8 @@
 package com.save.mycity.ui.fragment;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -19,6 +21,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.save.mycity.R;
+import com.save.mycity.ui.activity.CreateIssueActivity;
 import com.save.mycity.util.Constants;
 import com.save.mycity.util.MarkerData;
 import java.util.HashMap;
@@ -36,6 +39,8 @@ public class MyCityMapFragment extends SupportMapFragment
   private OnReportIncidentClickedListener mListener;
   private FloatingActionButton mBtnReportIncident;
   private HashMap<Marker, MarkerData> markerDataMap;
+  private SharedPreferences sharedpreferences;
+  private Context mContext;
 
   public static MyCityMapFragment newInstance(double latitude, double longitude) {
     MyCityMapFragment fragment = new MyCityMapFragment();
@@ -60,6 +65,8 @@ public class MyCityMapFragment extends SupportMapFragment
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
+    sharedpreferences = getActivity().getSharedPreferences(Constants.SHARED_PREF,
+        Context.MODE_PRIVATE);
     View mapView = super.onCreateView(inflater, container, savedInstanceState);
     View view = inflater.inflate(R.layout.fragment_my_city_map, container, false);
     ((FrameLayout) view.findViewById(R.id.map_container)).addView(mapView, 0);
@@ -71,6 +78,7 @@ public class MyCityMapFragment extends SupportMapFragment
 
   @Override public void onAttach(Context context) {
     super.onAttach(context);
+    mContext = context;
     if (context instanceof OnReportIncidentClickedListener) {
       mListener = (OnReportIncidentClickedListener) context;
     } else {
@@ -113,8 +121,13 @@ public class MyCityMapFragment extends SupportMapFragment
     switch (v.getId()) {
       case R.id.fab:
         Toast.makeText(getActivity(), "Report incident button pressed", Toast.LENGTH_LONG).show();
-        if (mListener != null) {
-          mListener.openReportScreenIfAlreadyLoggedIn();
+        if (sharedpreferences.getBoolean(Constants.PREF_LOGIN, false)) {
+          Intent intent = new Intent(mContext, CreateIssueActivity.class);
+          startActivity(intent);
+        }else {
+          if (mListener != null) {
+            mListener.openReportScreenIfAlreadyLoggedIn();
+          }
         }
         break;
     }

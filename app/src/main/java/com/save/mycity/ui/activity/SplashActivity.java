@@ -63,7 +63,7 @@ public class SplashActivity extends Activity {
       }
     };
     Timer t = new Timer();
-    t.schedule(task, 5000);
+    t.schedule(task, 3000);
     mLocation = getCurrentLocation();
     finishSplashActivity();
   }

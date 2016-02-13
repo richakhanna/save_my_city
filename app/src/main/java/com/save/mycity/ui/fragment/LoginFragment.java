@@ -2,6 +2,7 @@ package com.save.mycity.ui.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,6 +18,7 @@ import com.facebook.FacebookSdk;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.save.mycity.R;
+import com.save.mycity.util.Constants;
 
 public class LoginFragment extends Fragment {
 
@@ -25,6 +27,7 @@ public class LoginFragment extends Fragment {
   private String mParam1;
   private String mParam2;
   private LoginButton mLoginButton;
+  SharedPreferences sharedpreferences;
 
   private OnFragmentInteractionListener mListener;
   private CallbackManager callbackManager;
@@ -44,6 +47,8 @@ public class LoginFragment extends Fragment {
 
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    sharedpreferences = getActivity().getSharedPreferences(Constants.SHARED_PREF,
+        Context.MODE_PRIVATE);
     if (getArguments() != null) {
       mParam1 = getArguments().getString(ARG_PARAM1);
       mParam2 = getArguments().getString(ARG_PARAM2);
@@ -66,6 +71,9 @@ public class LoginFragment extends Fragment {
       @Override public void onSuccess(LoginResult loginResult) {
         Toast.makeText(getActivity(), "Fb login success", Toast.LENGTH_LONG).show();
         Log.v("LoginFragment", "Fb login success");
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putBoolean(Constants.PREF_LOGIN,true);
+        editor.commit();
         // App code
       }
 
