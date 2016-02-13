@@ -3,6 +3,7 @@ package com.save.mycity.ui.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,10 +28,12 @@ import com.save.mycity.util.Constants;
 public class MyCityMapFragment extends SupportMapFragment implements OnMapReadyCallback {
 
   private static final int DEFAULT_MAP_ZOOM_LEVEL = 15;
+  private static final String TAG = MyCityMapFragment.class.getSimpleName();
   private OnFragmentInteractionListener mListener;
   private GoogleMap googleMap;
   private double mLatitude;
   private double mLongitude;
+  private LatLng mLocation = null;
 
   public static MyCityMapFragment newInstance(double latitude ,double longitude) {
     MyCityMapFragment fragment = new MyCityMapFragment();
@@ -46,6 +49,11 @@ public class MyCityMapFragment extends SupportMapFragment implements OnMapReadyC
 
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    mLatitude = getArguments().getDouble(Constants.LATITUDE);
+    mLongitude = getArguments().getDouble(Constants.LONGITUDE);
+    mLocation = new LatLng(mLatitude,mLongitude);
+    Log.d(TAG, "location" + mLatitude + " " + mLongitude);
+    moveToLocation(mLocation);
   }
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,6 +76,11 @@ public class MyCityMapFragment extends SupportMapFragment implements OnMapReadyC
 
   @Override public void onMapReady(GoogleMap googleMap) {
     this.googleMap = googleMap;
+    if(mLocation != null) {
+      CameraPosition newCameraPosition =
+          new CameraPosition.Builder().target(mLocation).zoom(DEFAULT_MAP_ZOOM_LEVEL).build();
+      googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(newCameraPosition));
+    }
   }
 
   /**
@@ -85,6 +98,7 @@ public class MyCityMapFragment extends SupportMapFragment implements OnMapReadyC
 
   public boolean moveToLocation(LatLng location) {
     if (googleMap != null) {
+      googleMap.setMyLocationEnabled(true);
       CameraPosition newCameraPosition =
           new CameraPosition.Builder().target(location).zoom(DEFAULT_MAP_ZOOM_LEVEL).build();
       googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(newCameraPosition));

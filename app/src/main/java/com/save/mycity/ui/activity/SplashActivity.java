@@ -73,7 +73,7 @@ public class SplashActivity extends Activity {
       if (mLocation != null) {
         //showSnackbar(frameLayout,"true"+ mLocation.getLatitude() + " longitude "+ mLocation.getLongitude() );
         intent.putExtra(Constants.LATITUDE, mLocation.getLatitude());
-        intent.putExtra(Constants.LATITUDE, mLocation.getLongitude());
+        intent.putExtra(Constants.LONGITUDE, mLocation.getLongitude());
       } else {
         intent.putExtra(Constants.LATITUDE, INDIA_LAT);
         intent.putExtra(Constants.LONGITUDE, INDIA_LONG);
