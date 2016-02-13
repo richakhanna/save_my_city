@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--<objectAnimator-->
+    <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--android:interpolator="@android:anim/accelerate_decelerate_interpolator"-->
+    <!--android:propertyName="translationY"-->
+    <!--android:valueType="floatType"-->
+    <!--android:valueFrom="1280"-->
+    <!--android:valueTo="0"-->
+    <!--android:duration="400"-->
+    <!--/>-->
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:interpolator="@android:anim/accelerate_decelerate_interpolator" >
+    <translate
+        android:duration="600"
+        android:fromXDelta="0%p"
+        android:toXDelta="0%p"
+        android:fromYDelta="100%p"
+        android:toYDelta="0%p"
+        android:pivotX="0%"
+        android:pivotY="0%"/>
+</set>
+

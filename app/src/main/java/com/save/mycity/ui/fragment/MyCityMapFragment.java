@@ -3,6 +3,7 @@ package com.save.mycity.ui.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,7 @@ public class MyCityMapFragment extends SupportMapFragment
     implements OnMapReadyCallback, View.OnClickListener {
 
   private static final int DEFAULT_MAP_ZOOM_LEVEL = 15;
+  private static final String DETAIL_FRAGMENT_TAG = "detail_fragment_tag";
   private static final String TAG = MyCityMapFragment.class.getSimpleName();
   private GoogleMap mGoogleMap;
   private double mLatitude;
@@ -91,9 +93,10 @@ public class MyCityMapFragment extends SupportMapFragment
     switch (v.getId()) {
       case R.id.fab:
         Toast.makeText(getActivity(), "Report incident button pressed", Toast.LENGTH_LONG).show();
-        if (mListener != null) {
-          mListener.openReportScreenIfAlreadyLoggedIn();
-        }
+        bringFragmentFromBelow();
+        //if (mListener != null) {
+        //  mListener.openReportScreenIfAlreadyLoggedIn();
+        //}
         break;
     }
   }
@@ -121,5 +124,17 @@ public class MyCityMapFragment extends SupportMapFragment
       return true;
     }
     return false;
+  }
+
+  void bringFragmentFromBelow(){
+    Fragment f = getFragmentManager().findFragmentByTag(DETAIL_FRAGMENT_TAG);
+   if(f!=null) {
+     getFragmentManager().beginTransaction()
+         .replace(R.id.detail_fragment_container, DetailFragment.newInstance()).commit();
+   }else{
+      getFragmentManager().beginTransaction()
+          .setCustomAnimations(R.anim.slideup, R.anim.slideup)
+          .replace(R.id.detail_fragment_container, DetailFragment.newInstance()).commit();
+    }
   }
 }
