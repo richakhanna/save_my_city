@@ -15,6 +15,7 @@ import com.save.mycity.R;
 import com.save.mycity.ui.fragment.CategoryListFragment;
 import com.save.mycity.ui.fragment.LoginFragment;
 import com.save.mycity.ui.fragment.MyCityMapFragment;
+import com.save.mycity.ui.fragment.PartnerListFragment;
 import com.save.mycity.util.Constants;
 
 public class MainActivity extends AppCompatActivity
@@ -87,7 +88,9 @@ public class MainActivity extends AppCompatActivity
     } else if (id == R.id.nav_slideshow) {
 
     } else if (id == R.id.nav_manage) {
-
+      fragmentManager.beginTransaction()
+          .replace(R.id.main_fragment_container, PartnerListFragment.newInstance())
+          .commit();
     } else if (id == R.id.nav_share) {
 
     } else if (id == R.id.nav_send) {

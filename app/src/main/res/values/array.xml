@@ -8,4 +8,14 @@
     <item>Hazard</item>
     <item>Road Lamp</item>
   </string-array>
+  <string-array name="ngo_list">
+    <item>HelpAge India</item>
+    <item>Pratham</item>
+    <item>Care India</item>
+    <item>CRY</item>
+    <item>Goonj</item>
+    <item>PLAN India</item>
+    <item>Smile Foundation</item>
+
+  </string-array>
 </resources>
