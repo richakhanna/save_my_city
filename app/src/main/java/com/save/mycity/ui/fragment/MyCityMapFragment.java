@@ -2,12 +2,13 @@ package com.save.mycity.ui.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -17,29 +18,23 @@ import com.google.android.gms.maps.model.LatLng;
 import com.save.mycity.R;
 import com.save.mycity.util.Constants;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link MyCityMapFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link MyCityMapFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class MyCityMapFragment extends SupportMapFragment implements OnMapReadyCallback {
+public class MyCityMapFragment extends SupportMapFragment
+    implements OnMapReadyCallback, View.OnClickListener {
 
   private static final int DEFAULT_MAP_ZOOM_LEVEL = 15;
   private static final String TAG = MyCityMapFragment.class.getSimpleName();
-  private OnFragmentInteractionListener mListener;
   private GoogleMap mGoogleMap;
   private double mLatitude;
   private double mLongitude;
   private LatLng mLocation = null;
+  private OnReportIncidentClickedListener mListener;
+  private FloatingActionButton mBtnReportIncident;
 
-  public static MyCityMapFragment newInstance(double latitude ,double longitude) {
+  public static MyCityMapFragment newInstance(double latitude, double longitude) {
     MyCityMapFragment fragment = new MyCityMapFragment();
     Bundle bundle = new Bundle();
-    bundle.putDouble(Constants.LATITUDE,latitude);
-    bundle.putDouble(Constants.LONGITUDE,longitude);
+    bundle.putDouble(Constants.LATITUDE, latitude);
+    bundle.putDouble(Constants.LONGITUDE, longitude);
     fragment.setArguments(bundle);
     return fragment;
   }
@@ -51,7 +46,7 @@ public class MyCityMapFragment extends SupportMapFragment implements OnMapReadyC
     super.onCreate(savedInstanceState);
     mLatitude = getArguments().getDouble(Constants.LATITUDE);
     mLongitude = getArguments().getDouble(Constants.LONGITUDE);
-    mLocation = new LatLng(mLatitude,mLongitude);
+    mLocation = new LatLng(mLatitude, mLongitude);
     Log.d(TAG, "location" + mLatitude + " " + mLongitude);
     moveToLocation(mLocation);
   }
@@ -62,11 +57,19 @@ public class MyCityMapFragment extends SupportMapFragment implements OnMapReadyC
     View view = inflater.inflate(R.layout.fragment_my_city_map, container, false);
     ((FrameLayout) view.findViewById(R.id.map_container)).addView(mapView, 0);
     getMapAsync(this);
+    mBtnReportIncident = (FloatingActionButton) view.findViewById(R.id.fab);
+    mBtnReportIncident.setOnClickListener(this);
     return view;
   }
 
   @Override public void onAttach(Context context) {
     super.onAttach(context);
+    if (context instanceof OnReportIncidentClickedListener) {
+      mListener = (OnReportIncidentClickedListener) context;
+    } else {
+      throw new RuntimeException(
+          context.toString() + " must implement OnReportIncidentClickedListener");
+    }
   }
 
   @Override public void onDetach() {
@@ -77,24 +80,27 @@ public class MyCityMapFragment extends SupportMapFragment implements OnMapReadyC
   @Override public void onMapReady(GoogleMap googleMap) {
     mGoogleMap = googleMap;
     mGoogleMap.setMyLocationEnabled(true);
-    if(mLocation != null) {
+    if (mLocation != null) {
       CameraPosition newCameraPosition =
           new CameraPosition.Builder().target(mLocation).zoom(DEFAULT_MAP_ZOOM_LEVEL).build();
       mGoogleMap.moveCamera(CameraUpdateFactory.newCameraPosition(newCameraPosition));
     }
   }
 
-  /**
-   * This interface must be implemented by activities that contain this
-   * fragment to allow an interaction in this fragment to be communicated
-   * to the activity and potentially other fragments contained in that
-   * activity.
-   * <p/>
-   * See the Android Training lesson <a href=
-   * "http://developer.android.com/training/basics/fragments/communicating.html"
-   * >Communicating with Other Fragments</a> for more information.
-   */
-  public interface OnFragmentInteractionListener {
+  @Override public void onClick(View v) {
+    switch (v.getId()) {
+      case R.id.fab:
+        Toast.makeText(getActivity(), "Report incident button pressed", Toast.LENGTH_LONG).show();
+        if (mListener != null) {
+          mListener.openReportScreenIfAlreadyLoggedIn();
+        }
+        break;
+    }
+  }
+
+  public interface OnReportIncidentClickedListener {
+
+    void openReportScreenIfAlreadyLoggedIn();
   }
 
   public boolean moveToLocation(LatLng location) {

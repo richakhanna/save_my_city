@@ -8,4 +8,7 @@
 
   <string name="map_key">AIzaSyBV8kllZ4TfoNC7mCt7oA3IdaFfzPr--LY</string>
   <string name="facebook_app_id">498356970346396</string>
+
+  <!-- TODO: Remove or change this placeholder text -->
+  <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

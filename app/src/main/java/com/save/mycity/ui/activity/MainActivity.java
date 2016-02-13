@@ -1,5 +1,6 @@
 package com.save.mycity.ui.activity;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
@@ -11,11 +12,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import com.save.mycity.R;
+import com.save.mycity.ui.fragment.LoginFragment;
 import com.save.mycity.ui.fragment.MyCityMapFragment;
 import com.save.mycity.util.Constants;
 
 public class MainActivity extends AppCompatActivity
-    implements NavigationView.OnNavigationItemSelectedListener {
+    implements NavigationView.OnNavigationItemSelectedListener,
+    MyCityMapFragment.OnReportIncidentClickedListener, LoginFragment.OnFragmentInteractionListener {
+
   DrawerLayout drawer;
   private FragmentManager fragmentManager;
 
@@ -89,5 +93,17 @@ public class MainActivity extends AppCompatActivity
 
     drawer.closeDrawer(GravityCompat.START);
     return true;
+  }
+
+  @Override public void openReportScreenIfAlreadyLoggedIn() {
+    //replace the MyCityMap Fragment with Login fragment
+    fragmentManager.beginTransaction()
+        .replace(R.id.main_fragment_container, LoginFragment.newInstance("hello", "world"))
+        .addToBackStack(null)
+        .commit();
+  }
+
+  @Override public void onFragmentInteraction(Uri uri) {
+
   }
 }
