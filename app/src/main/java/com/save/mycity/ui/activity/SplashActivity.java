@@ -8,6 +8,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
+import android.view.animation.CycleInterpolator;
 import com.facebook.appevents.AppEventsLogger;
 import android.view.View;
 import android.view.animation.Animation;
@@ -52,6 +53,7 @@ public class SplashActivity extends Activity {
     mLocationimage = (ImageView) findViewById(R.id.location_img);
     mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
     bounce = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.bounce);
+    bounce.setInterpolator(new CycleInterpolator(0.5f));
     mLocationimage.startAnimation(bounce);
     TimerTask task = new TimerTask() {
 

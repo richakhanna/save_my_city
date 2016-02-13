@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/activity_horizontal_margin">
+
+  <TextView
+      android:id="@+id/tvTitle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:textAppearance="?android:attr/textAppearanceLarge"
+      android:text="Title"
+      android:textColor="@color/colorAccent"
+      android:layout_alignParentTop="true"
+      android:layout_alignParentStart="true"/>
+  <TextView
+      android:id="@+id/tvNoOfLikes"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:textAppearance="?android:attr/textAppearanceMedium"
+      android:text="38 Times Reported"
+      android:layout_alignBottom="@+id/tvTitle"
+      android:layout_alignParentEnd="true"/>
+  <TextView
+      android:id="@+id/tvDiscription"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:textAppearance="?android:attr/textAppearanceSmall"
+      android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+      android:layout_below="@+id/tvTitle"
+      android:layout_marginTop="@dimen/activity_horizontal_margin"
+      android:layout_alignStart="@+id/tvTitle"/>
+
+  <TextView
+      android:id="@+id/issueReported"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:textAppearance="?android:attr/textAppearanceSmall"
+      android:text="Issue Reported"
+      android:layout_below="@+id/tvDiscription"
+      android:layout_marginTop="@dimen/activity_horizontal_margin"
+      android:layout_alignParentStart="true"/>
+  <TextView
+      android:id="@+id/tvDateReported"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:textAppearance="?android:attr/textAppearanceMedium"
+      android:text="04/Feb/2016"
+      android:layout_below="@+id/issueReported"/>
+  <TextView
+      android:id="@+id/issueResolved"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:textAppearance="?android:attr/textAppearanceSmall"
+      android:text="Issue Resolved"
+      android:textColor="@color/colorAccent"
+      android:layout_alignBottom="@+id/issueReported"
+      android:layout_alignParentEnd="true"/>
+  <TextView
+      android:id="@+id/tvDateResolved"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:textAppearance="?android:attr/textAppearanceMedium"
+      android:text="12/Feb/2016"
+      android:textColor="@color/colorAccent"
+      android:layout_alignBottom="@+id/tvDateReported"
+      android:layout_alignParentEnd="true"/>
+
+</RelativeLayout>

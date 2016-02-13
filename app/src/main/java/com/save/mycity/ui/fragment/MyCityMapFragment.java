@@ -16,11 +16,15 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.save.mycity.R;
 import com.save.mycity.util.Constants;
+import com.save.mycity.util.MarkerData;
+import java.util.HashMap;
 
 public class MyCityMapFragment extends SupportMapFragment
-    implements OnMapReadyCallback, View.OnClickListener {
+    implements OnMapReadyCallback, View.OnClickListener, GoogleMap.OnMarkerClickListener {
 
   private static final int DEFAULT_MAP_ZOOM_LEVEL = 15;
   private static final String DETAIL_FRAGMENT_TAG = "detail_fragment_tag";
@@ -31,6 +35,7 @@ public class MyCityMapFragment extends SupportMapFragment
   private LatLng mLocation = null;
   private OnReportIncidentClickedListener mListener;
   private FloatingActionButton mBtnReportIncident;
+  private HashMap<Marker, MarkerData> markerDataMap;
 
   public static MyCityMapFragment newInstance(double latitude, double longitude) {
     MyCityMapFragment fragment = new MyCityMapFragment();
@@ -83,10 +88,25 @@ public class MyCityMapFragment extends SupportMapFragment
     mGoogleMap = googleMap;
     mGoogleMap.setMyLocationEnabled(true);
     if (mLocation != null) {
-      CameraPosition newCameraPosition =
-          new CameraPosition.Builder().target(mLocation).zoom(DEFAULT_MAP_ZOOM_LEVEL).build();
-      mGoogleMap.moveCamera(CameraUpdateFactory.newCameraPosition(newCameraPosition));
+      animateToLocation(mLocation);
     }
+    markerDataMap = new HashMap<>();
+    LatLng report = new LatLng(12.9602028, 77.6430893);
+    Marker reportMarker = googleMap.addMarker(new MarkerOptions().position(report));
+    markerDataMap.put(reportMarker, new MarkerData(453235, "Mr Harish Chandra", "Broken water pipe",
+        "Pipe at <location> is being broken at <place> since <date>", "13/feb/2016", "3/Feb/2016",
+        205, reportMarker));
+    googleMap.setOnMarkerClickListener(this);
+  }
+
+  @Override public boolean onMarkerClick(Marker marker) {
+    MarkerData markerData = markerDataMap.get(marker);
+    if (markerData != null) {
+      bringFragmentFromBelow(markerData);
+    } else {
+      marker.remove();
+    }
+    return false;
   }
 
   @Override public void onClick(View v) {
@@ -101,7 +121,6 @@ public class MyCityMapFragment extends SupportMapFragment
   }
 
   public interface OnReportIncidentClickedListener {
-
     void openReportScreenIfAlreadyLoggedIn();
   }
 
@@ -125,15 +144,15 @@ public class MyCityMapFragment extends SupportMapFragment
     return false;
   }
 
-  void bringFragmentFromBelow(){
-    Fragment f = getFragmentManager().findFragmentByTag(DETAIL_FRAGMENT_TAG);
-   if(f!=null) {
-     getFragmentManager().beginTransaction()
-         .replace(R.id.detail_fragment_container, DetailFragment.newInstance()).commit();
-   }else{
+  void bringFragmentFromBelow(MarkerData markerData){
+    Fragment f = getFragmentManager().findFragmentById(R.id.detail_fragment_container);
+    if(f!=null) {
+      getFragmentManager().beginTransaction()
+          .replace(R.id.detail_fragment_container, DetailFragment.newInstance(markerData)).commit();
+    }else{
       getFragmentManager().beginTransaction()
           .setCustomAnimations(R.anim.slideup, R.anim.slideup)
-          .replace(R.id.detail_fragment_container, DetailFragment.newInstance()).commit();
+          .replace(R.id.detail_fragment_container, DetailFragment.newInstance(markerData)).commit();
     }
   }
 }
