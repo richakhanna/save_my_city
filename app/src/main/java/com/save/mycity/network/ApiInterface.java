@@ -17,7 +17,6 @@ import retrofit.http.Query;
 
 public interface ApiInterface {
 
-
     @GET("/movie/{id}/videos")
     void videos(@Path("id") String tmdbId, @Query("language") String language,
         Callback<SampleModel> videosCallback);
