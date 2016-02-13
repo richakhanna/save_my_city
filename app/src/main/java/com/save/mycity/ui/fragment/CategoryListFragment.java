@@ -1,6 +1,7 @@
 package com.save.mycity.ui.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import com.save.mycity.R;
+import com.save.mycity.ui.activity.CreateIssueActivity;
 import com.save.mycity.ui.adapter.CategoryAdapter;
 
 public class CategoryListFragment extends Fragment {
@@ -24,6 +26,7 @@ public class CategoryListFragment extends Fragment {
   private CategoryAdapter mCategoryAdapter;
 
   private OnFragmentInteractionListener mListener;
+  private Context mContext;
 
   public static CategoryListFragment newInstance(String param1, String param2) {
     CategoryListFragment fragment = new CategoryListFragment();
@@ -66,6 +69,7 @@ public class CategoryListFragment extends Fragment {
 
   @Override public void onAttach(Context context) {
     super.onAttach(context);
+    mContext = context;
     if (context instanceof OnFragmentInteractionListener) {
       mListener = (OnFragmentInteractionListener) context;
     } else {
@@ -81,7 +85,9 @@ public class CategoryListFragment extends Fragment {
 
   AdapterView.OnItemClickListener mItemClickListener = new AdapterView.OnItemClickListener() {
     @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+      Intent intent = new Intent(mContext, CreateIssueActivity.class);
+      intent.putExtra("category_tag",mCategoryList[position]);
+      startActivity(intent);
     }
   };
 

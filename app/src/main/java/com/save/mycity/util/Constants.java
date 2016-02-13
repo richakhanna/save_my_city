@@ -9,4 +9,5 @@ public interface Constants {
   String LONGITUDE = "long";
   String PREF_LOGIN = "login";
   String SHARED_PREF = "shared";
+  String ADDRESS = "address";
 }

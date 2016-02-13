@@ -2,6 +2,8 @@ package com.save.mycity.ui.fragment;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -22,7 +24,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.save.mycity.R;
 import com.save.mycity.util.Constants;
 import com.save.mycity.util.MarkerData;
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 
 public class MyCityMapFragment extends SupportMapFragment
     implements OnMapReadyCallback, View.OnClickListener, GoogleMap.OnMarkerClickListener {
@@ -54,17 +59,39 @@ public class MyCityMapFragment extends SupportMapFragment
 
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    sharedpreferences =
+        getActivity().getSharedPreferences(Constants.SHARED_PREF, Context.MODE_PRIVATE);
     mLatitude = getArguments().getDouble(Constants.LATITUDE);
     mLongitude = getArguments().getDouble(Constants.LONGITUDE);
+    saveAddress();
     mLocation = new LatLng(mLatitude, mLongitude);
     Log.d(TAG, "location" + mLatitude + " " + mLongitude);
     moveToLocation(mLocation);
   }
 
+  private void saveAddress() {
+    Geocoder geocoder;
+    List<Address> addresses =null;
+    geocoder = new Geocoder(mContext, Locale.getDefault());
+    try {
+      addresses = geocoder.getFromLocation(mLatitude, mLongitude, 1);
+      Log.d(TAG,"address " + addresses);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    if(addresses != null) {
+      String address = addresses.get(0).getAddressLine(0);
+      String state = addresses.get(0).getAdminArea();
+      String country = addresses.get(0).getCountryName();
+      address = address +"," +state +","+country;
+      SharedPreferences.Editor editor  = sharedpreferences.edit();
+      editor.putString(Constants.ADDRESS, address);
+      editor.commit();
+    }
+  }
+
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
-    sharedpreferences =
-        getActivity().getSharedPreferences(Constants.SHARED_PREF, Context.MODE_PRIVATE);
     View mapView = super.onCreateView(inflater, container, savedInstanceState);
     View view = inflater.inflate(R.layout.fragment_my_city_map, container, false);
     ((FrameLayout) view.findViewById(R.id.map_container)).addView(mapView, 0);
