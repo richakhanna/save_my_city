@@ -3,6 +3,7 @@ package com.save.mycity.ui.activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -11,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import com.google.android.gms.maps.model.LatLng;
 import com.save.mycity.R;
 import com.save.mycity.ui.fragment.CategoryListFragment;
 import com.save.mycity.ui.fragment.LoginFragment;
@@ -25,6 +27,7 @@ public class MainActivity extends AppCompatActivity
 
   private DrawerLayout drawer;
   private FragmentManager fragmentManager;
+  private LatLng mLocation;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -43,7 +46,10 @@ public class MainActivity extends AppCompatActivity
     NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
     navigationView.setNavigationItemSelectedListener(this);
     fragmentManager = getSupportFragmentManager();
-    // MapFragment Default
+    // load map Fragment Default
+    double lat = getIntent().getDoubleExtra(Constants.LATITUDE, 0.0);
+    double lon = getIntent().getDoubleExtra(Constants.LONGITUDE, 0.0);
+    mLocation = new LatLng(lat, lon);
     fragmentManager.beginTransaction()
         .replace(R.id.main_fragment_container,
             MyCityMapFragment.newInstance(getIntent().getDoubleExtra(Constants.LATITUDE, 0.0),
@@ -78,11 +84,15 @@ public class MainActivity extends AppCompatActivity
   public boolean onNavigationItemSelected(MenuItem item) {
     // Handle navigation view item clicks here.
     int id = item.getItemId();
+    Fragment fragment = fragmentManager.findFragmentById(R.id.main_fragment_container);
 
     if (id == R.id.nav_report) {
-      fragmentManager.beginTransaction()
-          .replace(R.id.main_fragment_container, MyCityMapFragment.newInstance())
-          .commit();
+      if (fragment instanceof MyCityMapFragment) {
+        fragmentManager.beginTransaction()
+            .replace(R.id.main_fragment_container,
+                MyCityMapFragment.newInstance(mLocation.latitude, mLocation.longitude))
+            .commit();
+      }
     } else if (id == R.id.nav_gallery) {
 
     } else if (id == R.id.nav_slideshow) {
