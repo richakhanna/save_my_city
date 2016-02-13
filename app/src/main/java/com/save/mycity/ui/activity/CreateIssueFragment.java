@@ -21,10 +21,10 @@ import java.util.Calendar;
 /**
  * Created by harshikesh.kumar on 14/02/16.
  */
-public class CreateIssueFragment extends Fragment implements View.OnClickListener{
+public class CreateIssueFragment extends Fragment implements View.OnClickListener {
 
   private Context mContext;
-  private SharedPreferences mSharedpreferences;
+  private SharedPreferences mSharedPreferences;
   private FloatingActionButton mSaveButton;
   private TextView mName;
   private TextView mAddress;
@@ -57,21 +57,25 @@ public class CreateIssueFragment extends Fragment implements View.OnClickListene
   @Nullable @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.activity_category, container, false);
-    mSharedpreferences = mContext.getSharedPreferences(Constants.SHARED_PREF, Context.MODE_PRIVATE);
+    mSharedPreferences =
+        mContext.getSharedPreferences(Constants.PREFERENCE_NAME, Context.MODE_PRIVATE);
     mSaveButton = (FloatingActionButton) view.findViewById(R.id.save);
     mSaveButton.setOnClickListener(this);
     mName = (TextView) view.findViewById(R.id.name);
-    mAddress = (TextView)view.findViewById(R.id.address);
-    mDate = (TextView)view.findViewById(R.id.date);
-    mEditText = (EditText)view.findViewById(R.id.edit_text);
+    mAddress = (TextView) view.findViewById(R.id.address);
+    mDate = (TextView) view.findViewById(R.id.date);
+    mEditText = (EditText) view.findViewById(R.id.edit_text);
     mCamImage = (ImageView) view.findViewById(R.id.camera_img);
 
     setCurrentLocation();
     mDate.setText(getCurrentDate());
     return view;
   }
+
   private void setCurrentLocation() {
-    String address = mSharedpreferences.getString(Constants.ADDRESS,"India");
+    String address = mSharedPreferences.getString(Constants.ADDRESS, "India");
+    String userEmail = mSharedPreferences.getString(Constants.USER_EMAIL, "");
+    String userName = mSharedPreferences.getString(Constants.USER_NAME, "");
     mAddress.setText(address);
   }
 
@@ -83,8 +87,7 @@ public class CreateIssueFragment extends Fragment implements View.OnClickListene
   }
 
   @Override public void onClick(View v) {
-    switch (v.getId())
-    {
+    switch (v.getId()) {
       case R.id.save:
         Toast.makeText(mContext, " You will be heard! ", Toast.LENGTH_SHORT);
         break;

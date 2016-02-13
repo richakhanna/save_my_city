@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity
   }
 
   @Override public void onLoginSuccess() {
-    //replace the MyCityMap Fragment with Login fragment
+    //replace the Login Fragment with CategoryList fragment
     fragmentManager.beginTransaction()
         .replace(R.id.main_fragment_container, CategoryListFragment.newInstance("hello", "world"))
         .addToBackStack(null)
