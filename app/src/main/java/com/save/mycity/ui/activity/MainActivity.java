@@ -1,8 +1,8 @@
 package com.save.mycity.ui.activity;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity
 
     // MapFragment Default
     fragmentManager.beginTransaction()
-        .replace(R.id.main_container, MyCityMapFragment.newInstance())
+        .replace(R.id.main_fragment_container, MyCityMapFragment.newInstance())
         .commit();
   }
 
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity
 
     if (id == R.id.nav_report) {
       fragmentManager.beginTransaction()
-          .replace(R.id.main_container, MyCityMapFragment.newInstance())
+          .replace(R.id.main_fragment_container, MyCityMapFragment.newInstance())
           .commit();
     } else if (id == R.id.nav_gallery) {
 

@@ -5,7 +5,6 @@ package com.save.mycity.util;
  */
 public interface Constants {
 
-    String LATITUDE = "lat";
-   String LONGITUDE ="long";
-
+  String LATITUDE = "lat";
+  String LONGITUDE = "long";
 }

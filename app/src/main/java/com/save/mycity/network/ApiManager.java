@@ -9,34 +9,35 @@ import retrofit.converter.GsonConverter;
  */
 public class ApiManager {
 
-    private  static ApiManager mApiManager;
-    private ApiManager() {
-    }
+  private static ApiManager mApiManager;
 
-    public static ApiManager getInstance(){
-        if(mApiManager == null) {
-            mApiManager =  new ApiManager();
+  private ApiManager() {
+  }
+
+  public static ApiManager getInstance() {
+    if (mApiManager == null) {
+      mApiManager = new ApiManager();
+    }
+    return mApiManager;
+  }
+
+  public final static String API_BASE_ENDPOINT = "https://api.themoviedb.org/3";
+
+  private RestAdapter mRestAdapter;
+
+  public RestAdapter getRestAdapter() {
+    if (mRestAdapter == null) {
+      RestAdapter.Builder builder = new RestAdapter.Builder();
+
+      builder.setEndpoint(API_BASE_ENDPOINT);
+      builder.setConverter(new GsonConverter(ApiHelper.getGsonBuilder().create()));
+      builder.setRequestInterceptor(new RequestInterceptor() {
+        public void intercept(RequestFacade requestFacade) {
         }
-       return mApiManager;
+      });
+      mRestAdapter = builder.build();
     }
 
-    public final static String API_BASE_ENDPOINT = "https://api.themoviedb.org/3";
-
-
-    private RestAdapter mRestAdapter;
-    public RestAdapter getRestAdapter() {
-        if (mRestAdapter == null) {
-            RestAdapter.Builder builder = new RestAdapter.Builder();
-
-            builder.setEndpoint(API_BASE_ENDPOINT);
-            builder.setConverter(new GsonConverter(ApiHelper.getGsonBuilder().create()));
-            builder.setRequestInterceptor(new RequestInterceptor() {
-                public void intercept(RequestFacade requestFacade) {
-                }
-            });
-            mRestAdapter = builder.build();
-        }
-
-        return mRestAdapter;
-    }
+    return mRestAdapter;
+  }
 }
