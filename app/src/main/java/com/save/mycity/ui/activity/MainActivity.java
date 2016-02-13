@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity
 
     } else if (id == R.id.nav_manage) {
       fragmentManager.beginTransaction()
-          .replace(R.id.main_fragment_container, PartnerListFragment.newInstance())
+          .replace(R.id.main_fragment_container, PartnerListFragment.newInstance()).addToBackStack("TAG")
           .commit();
     } else if (id == R.id.nav_share) {
 
