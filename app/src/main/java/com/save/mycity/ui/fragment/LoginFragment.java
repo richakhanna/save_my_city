@@ -2,19 +2,18 @@ package com.save.mycity.ui.fragment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.Profile;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.save.mycity.R;
@@ -27,9 +26,11 @@ public class LoginFragment extends Fragment {
   private String mParam1;
   private String mParam2;
   private LoginButton mLoginButton;
-  SharedPreferences sharedpreferences;
+  private AccessToken accessToken;
+  private Profile mProfile;
 
-  private OnFragmentInteractionListener mListener;
+
+  private OnFbLoginListener mListener;
   private CallbackManager callbackManager;
 
   public static LoginFragment newInstance(String param1, String param2) {
@@ -47,8 +48,6 @@ public class LoginFragment extends Fragment {
 
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    sharedpreferences = getActivity().getSharedPreferences(Constants.SHARED_PREF,
-        Context.MODE_PRIVATE);
     if (getArguments() != null) {
       mParam1 = getArguments().getString(ARG_PARAM1);
       mParam2 = getArguments().getString(ARG_PARAM2);
@@ -62,49 +61,47 @@ public class LoginFragment extends Fragment {
     FacebookSdk.sdkInitialize(getContext().getApplicationContext());
     callbackManager = CallbackManager.Factory.create();
     mLoginButton = (LoginButton) view.findViewById(R.id.login_button);
-    mLoginButton.setReadPermissions("user_friends");
     // If using in a fragment
     mLoginButton.setFragment(this);
+
+    // If the access token is available already assign it.
+    accessToken = AccessToken.getCurrentAccessToken();
+    mProfile = Profile.getCurrentProfile();
+    if (accessToken != null && mListener != null) {
+      Toast.makeText(getActivity(), "Already Logged In", Toast.LENGTH_LONG).show();
+      mListener.onLoginSuccess();
+    }
 
     // Callback registration
     mLoginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
       @Override public void onSuccess(LoginResult loginResult) {
         Toast.makeText(getActivity(), "Fb login success", Toast.LENGTH_LONG).show();
-        Log.v("LoginFragment", "Fb login success");
-        SharedPreferences.Editor editor = sharedpreferences.edit();
-        editor.putBoolean(Constants.PREF_LOGIN,true);
-        editor.commit();
         // App code
+        if (mListener != null) {
+          mListener.onLoginSuccess();
+        }
       }
 
       @Override public void onCancel() {
         Toast.makeText(getActivity(), "Fb login cancel", Toast.LENGTH_LONG).show();
-        Log.v("LoginFragment", "Fb login cancel");
         // App code
       }
 
       @Override public void onError(FacebookException exception) {
         Toast.makeText(getActivity(), "Fb login error", Toast.LENGTH_LONG).show();
-        Log.v("LoginFragment", "Fb login error");
         // App code
       }
     });
-    return view;
-  }
 
-  public void onButtonPressed(Uri uri) {
-    if (mListener != null) {
-      mListener.onFragmentInteraction(uri);
-    }
+    return view;
   }
 
   @Override public void onAttach(Context context) {
     super.onAttach(context);
-    if (context instanceof OnFragmentInteractionListener) {
-      mListener = (OnFragmentInteractionListener) context;
+    if (context instanceof OnFbLoginListener) {
+      mListener = (OnFbLoginListener) context;
     } else {
-      throw new RuntimeException(
-          context.toString() + " must implement OnFragmentInteractionListener");
+      throw new RuntimeException(context.toString() + " must implement OnFbLoginListener");
     }
   }
 
@@ -113,14 +110,13 @@ public class LoginFragment extends Fragment {
     mListener = null;
   }
 
-  public interface OnFragmentInteractionListener {
-    void onFragmentInteraction(Uri uri);
+  public interface OnFbLoginListener {
+    void onLoginSuccess();
   }
 
   @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
     callbackManager.onActivityResult(requestCode, resultCode, data);
     Toast.makeText(getActivity(), "onActivityResult", Toast.LENGTH_LONG).show();
-    Log.v("LoginFragment", "onActivityResult");
   }
 }

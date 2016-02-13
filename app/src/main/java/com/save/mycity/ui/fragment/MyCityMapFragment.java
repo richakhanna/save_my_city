@@ -1,7 +1,6 @@
 package com.save.mycity.ui.fragment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -21,7 +20,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.save.mycity.R;
-import com.save.mycity.ui.activity.CreateIssueActivity;
 import com.save.mycity.util.Constants;
 import com.save.mycity.util.MarkerData;
 import java.util.HashMap;
@@ -65,8 +63,8 @@ public class MyCityMapFragment extends SupportMapFragment
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
-    sharedpreferences = getActivity().getSharedPreferences(Constants.SHARED_PREF,
-        Context.MODE_PRIVATE);
+    sharedpreferences =
+        getActivity().getSharedPreferences(Constants.SHARED_PREF, Context.MODE_PRIVATE);
     View mapView = super.onCreateView(inflater, container, savedInstanceState);
     View view = inflater.inflate(R.layout.fragment_my_city_map, container, false);
     ((FrameLayout) view.findViewById(R.id.map_container)).addView(mapView, 0);
@@ -121,13 +119,8 @@ public class MyCityMapFragment extends SupportMapFragment
     switch (v.getId()) {
       case R.id.fab:
         Toast.makeText(getActivity(), "Report incident button pressed", Toast.LENGTH_LONG).show();
-        if (sharedpreferences.getBoolean(Constants.PREF_LOGIN, false)) {
-          Intent intent = new Intent(mContext, CreateIssueActivity.class);
-          startActivity(intent);
-        }else {
-          if (mListener != null) {
-            mListener.openReportScreenIfAlreadyLoggedIn();
-          }
+        if (mListener != null) {
+          mListener.openReportScreenIfAlreadyLoggedIn();
         }
         break;
     }
@@ -157,15 +150,17 @@ public class MyCityMapFragment extends SupportMapFragment
     return false;
   }
 
-  void bringFragmentFromBelow(MarkerData markerData){
+  void bringFragmentFromBelow(MarkerData markerData) {
     Fragment f = getFragmentManager().findFragmentById(R.id.detail_fragment_container);
-    if(f!=null) {
+    if (f != null) {
       getFragmentManager().beginTransaction()
-          .replace(R.id.detail_fragment_container, DetailFragment.newInstance(markerData)).commit();
-    }else{
+          .replace(R.id.detail_fragment_container, DetailFragment.newInstance(markerData))
+          .commit();
+    } else {
       getFragmentManager().beginTransaction()
           .setCustomAnimations(R.anim.slideup, R.anim.slideup)
-          .replace(R.id.detail_fragment_container, DetailFragment.newInstance(markerData)).commit();
+          .replace(R.id.detail_fragment_container, DetailFragment.newInstance(markerData))
+          .commit();
     }
   }
 }
