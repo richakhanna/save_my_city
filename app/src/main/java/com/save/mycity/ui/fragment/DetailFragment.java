@@ -1,11 +1,14 @@
 package com.save.mycity.ui.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import com.save.mycity.R;
 import com.save.mycity.util.MarkerData;
 
@@ -15,11 +18,12 @@ import com.save.mycity.util.MarkerData;
 public class DetailFragment extends Fragment {
 
   private static final String MARKER_DATA = "marker_data";
+  private MarkerData markerData;
 
   public static DetailFragment newInstance(MarkerData markerData) {
     DetailFragment fragment = new DetailFragment();
     Bundle bundle = new Bundle();
-    bundle.putParcelable(MARKER_DATA,markerData);
+    bundle.putParcelable(MARKER_DATA, markerData);
     fragment.setArguments(bundle);
     return fragment;
   }
@@ -29,13 +33,29 @@ public class DetailFragment extends Fragment {
 
   @Override public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    MarkerData markerData = getArguments().getParcelable(MARKER_DATA);
+    markerData = getArguments().getParcelable(MARKER_DATA);
+  }
+
+  @Override public void onAttach(Context context) {
+    super.onAttach(context);
   }
 
   @Nullable @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
-    View view  = inflater.inflate(R.layout.fragment_issue_details, container, false);
-
+    View view = inflater.inflate(R.layout.fragment_issue_details, container, false);
+    if (markerData != null) {
+      ((TextView) view.findViewById(R.id.tvTitle)).setText(
+          Html.fromHtml("<u>" + markerData.getTitle() + "</u>"));
+      ((TextView) view.findViewById(R.id.tvNoOfLikes)).setText(
+          markerData.getLikeCount() + " Times Reported");
+      ((TextView) view.findViewById(R.id.tvDiscription)).setText(markerData.getDiscription());
+      ((TextView) view.findViewById(R.id.tvDateReported)).setText(markerData.getDateReported());
+      ((TextView) view.findViewById(R.id.tvDateResolved)).setText(markerData.isClosed()?markerData.getDateClosed():" - - -  ");
+    }
     return view;
+  }
+
+  public long getIssueId() {
+    return markerData.getId();
   }
 }

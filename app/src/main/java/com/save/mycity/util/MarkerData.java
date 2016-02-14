@@ -2,6 +2,7 @@ package com.save.mycity.util;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
 import com.google.android.gms.maps.model.Marker;
 
 /**
@@ -15,8 +16,8 @@ public class MarkerData implements Parcelable{
   private String dateReported;
   private String dateClosed;
 
-  public MarkerData(long id, String name, String title, String discription, String dateClosed,
-      String dateReported, int likeCount, Marker marker) {
+  public MarkerData(long id, String title, String discription, String dateClosed,
+      String dateReported, int likeCount) {
     this.dateClosed = dateClosed;
     this.dateReported = dateReported;
     this.discription = discription;
@@ -46,6 +47,9 @@ public class MarkerData implements Parcelable{
 
   public String getDateClosed() {
     return dateClosed;
+  }
+  public boolean isClosed(){
+    return !TextUtils.isEmpty(dateClosed);
   }
 
   public void setDateClosed(String dateClosed) {
