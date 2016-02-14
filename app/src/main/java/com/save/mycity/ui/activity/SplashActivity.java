@@ -73,7 +73,6 @@ public class SplashActivity extends Activity {
     if (isTimerFinished && isGetLocation) {
       Intent intent = new Intent(this, MainActivity.class);
       if (mLocation != null) {
-        //showSnackbar(frameLayout,"true"+ mLocation.getLatitude() + " longitude "+ mLocation.getLongitude() );
         intent.putExtra(Constants.LATITUDE, mLocation.getLatitude());
         intent.putExtra(Constants.LONGITUDE, mLocation.getLongitude());
       } else {
@@ -167,7 +166,4 @@ public class SplashActivity extends Activity {
     AppEventsLogger.deactivateApp(this);
   }
 
-  protected void showSnackbar(View view, String msg) {
-    Snackbar.make(view, msg, Snackbar.LENGTH_SHORT).show();
-  }
 }

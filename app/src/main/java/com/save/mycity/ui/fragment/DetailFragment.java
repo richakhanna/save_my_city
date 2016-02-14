@@ -8,7 +8,9 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.save.mycity.R;
 import com.save.mycity.util.MarkerData;
 
@@ -51,7 +53,18 @@ public class DetailFragment extends Fragment {
       ((TextView) view.findViewById(R.id.tvDiscription)).setText(markerData.getDiscription());
       ((TextView) view.findViewById(R.id.tvDateReported)).setText(markerData.getDateReported());
       ((TextView) view.findViewById(R.id.tvDateResolved)).setText(markerData.isClosed()?markerData.getDateClosed():" - - -  ");
+      ((ImageView) view.findViewById(R.id.btnPlusOne)).setOnClickListener(new View.OnClickListener() {
+        @Override public void onClick(View v) {
+          v.setAlpha(0.6f);
+          Toast.makeText(getActivity(),"Issue reported",Toast.LENGTH_LONG).show();
+        }
+      });
     }
+    view.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View v) {
+
+      }
+    });
     return view;
   }
 

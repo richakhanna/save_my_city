@@ -1,5 +1,7 @@
 package com.save.mycity.ui.activity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -12,6 +14,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import com.google.android.gms.maps.model.LatLng;
 import com.save.mycity.R;
 import com.save.mycity.ui.fragment.CategoryListFragment;
@@ -28,6 +32,8 @@ public class MainActivity extends AppCompatActivity
   private DrawerLayout drawer;
   private FragmentManager fragmentManager;
   private LatLng mLocation;
+  private SharedPreferences mSharedPreferences;
+  private View headerView;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -45,6 +51,7 @@ public class MainActivity extends AppCompatActivity
 
     NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
     navigationView.setNavigationItemSelectedListener(this);
+    headerView = navigationView.getHeaderView(0);
     fragmentManager = getSupportFragmentManager();
     // load map Fragment Default
     double lat = getIntent().getDoubleExtra(Constants.LATITUDE, 0.0);
@@ -55,6 +62,15 @@ public class MainActivity extends AppCompatActivity
             MyCityMapFragment.newInstance(getIntent().getDoubleExtra(Constants.LATITUDE, 0.0),
                 getIntent().getDoubleExtra(Constants.LONGITUDE, 0.0)))
         .commit();
+    mSharedPreferences = getSharedPreferences(Constants.PREFERENCE_NAME, Context.MODE_PRIVATE);
+    showUserDetails();
+  }
+
+  public void showUserDetails() {
+    String name = mSharedPreferences.getString(Constants.USER_NAME, "Login");
+    String email = mSharedPreferences.getString(Constants.USER_EMAIL, "");
+    ((TextView)headerView.findViewById(R.id.tvMainName)).setText(name);
+    ((TextView)headerView.findViewById(R.id.tvEmailId)).setText(email);
   }
 
   @Override public void onBackPressed() {
@@ -99,7 +115,8 @@ public class MainActivity extends AppCompatActivity
 
     } else if (id == R.id.nav_manage) {
       fragmentManager.beginTransaction()
-          .replace(R.id.main_fragment_container, PartnerListFragment.newInstance()).addToBackStack("TAG")
+          .replace(R.id.main_fragment_container, PartnerListFragment.newInstance())
+          .addToBackStack("TAG")
           .commit();
     } else if (id == R.id.nav_share) {
 
@@ -117,11 +134,11 @@ public class MainActivity extends AppCompatActivity
         .replace(R.id.main_fragment_container, LoginFragment.newInstance("hello", "world"))
         .addToBackStack(null)
         .commit();
-
   }
 
   @Override public void onLoginSuccess() {
     //replace the Login Fragment with CategoryList fragment
+    showUserDetails();
     fragmentManager.popBackStack();
     fragmentManager.beginTransaction()
         .replace(R.id.main_fragment_container, CategoryListFragment.newInstance("hello", "world"))

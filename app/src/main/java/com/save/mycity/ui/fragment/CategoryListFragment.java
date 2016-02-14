@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import com.save.mycity.R;
-import com.save.mycity.ui.activity.CreateIssueFragment;
 import com.save.mycity.ui.adapter.CategoryAdapter;
 
 public class CategoryListFragment extends Fragment {

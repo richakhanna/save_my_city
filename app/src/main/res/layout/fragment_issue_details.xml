@@ -13,7 +13,6 @@
       android:text="Title"
       android:textColor="@color/colorAccent"
       android:layout_alignParentTop="true"
-
       android:layout_alignParentStart="true"/>
   <TextView
       android:id="@+id/tvNoOfLikes"
@@ -67,5 +66,15 @@
       android:textColor="@color/colorAccent"
       android:layout_alignBottom="@+id/tvDateReported"
       android:layout_alignParentEnd="true"/>
+    <ImageButton
+        android:id="@+id/btnPlusOne"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_add_black"
+        android:layout_marginRight="5dp"
+        android:alpha=".4"
+        android:layout_alignParentTop="true"
+        android:layout_toStartOf="@+id/tvNoOfLikes" android:layout_alignBottom="@+id/tvNoOfLikes"/>
 
 </RelativeLayout>

@@ -1,4 +1,4 @@
-package com.save.mycity.ui.activity;
+package com.save.mycity.ui.fragment;
 
 import android.app.Activity;
 import android.content.Context;
@@ -32,7 +32,7 @@ public class CreateIssueFragment extends Fragment implements View.OnClickListene
   private FloatingActionButton mSaveButton;
   private TextView mName;
   private TextView mAddress;
-  private ImageView mCamImage;
+  private FloatingActionButton mCamBtn;
   private EditText mEditText;
   private TextView mDate;
   private ImageView mImageView;
@@ -71,8 +71,8 @@ public class CreateIssueFragment extends Fragment implements View.OnClickListene
     mAddress = (TextView) view.findViewById(R.id.address);
     mDate = (TextView) view.findViewById(R.id.date);
     mEditText = (EditText) view.findViewById(R.id.edit_text);
-    mCamImage = (ImageView) view.findViewById(R.id.camera_img);
-    mCamImage.setOnClickListener(this);
+    mCamBtn = (FloatingActionButton) view.findViewById(R.id.camera_img);
+    mCamBtn.setOnClickListener(this);
 
     setCurrentLocation();
     mDate.setText(getCurrentDate());
@@ -118,6 +118,7 @@ public class CreateIssueFragment extends Fragment implements View.OnClickListene
       Bitmap imageBitmap = (Bitmap) extras.get("data");
       mImageView.setImageBitmap(imageBitmap);
       mImageView.setVisibility(View.VISIBLE);
+      mCamBtn.setSelected(true);
     }
   }
 }
