@@ -92,6 +92,7 @@ public class CreateIssueFragment extends Fragment implements View.OnClickListene
     String userEmail = mSharedPreferences.getString(Constants.USER_EMAIL, "");
     String userName = mSharedPreferences.getString(Constants.USER_NAME, "");
     mAddress.setText(address);
+    mName.setText(userName);
   }
 
   private String getCurrentDate() {

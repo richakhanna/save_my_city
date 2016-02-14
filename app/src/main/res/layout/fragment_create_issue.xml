@@ -55,7 +55,7 @@
           android:textColor="#a9a9a9"
           android:paddingLeft="10dp"
           android:layout_toRightOf="@id/name"
-          android:text="Bangaloredddd,India"
+          android:text="14-Feb-2016"
       />
       <TextView
           android:id="@+id/description"
