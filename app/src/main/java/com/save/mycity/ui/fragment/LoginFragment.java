@@ -79,7 +79,6 @@ public class LoginFragment extends Fragment {
     mProfile = Profile.getCurrentProfile();
 
     if (accessToken != null && mListener != null) {
-      Toast.makeText(getActivity(), "Already Logged In", Toast.LENGTH_LONG).show();
       mListener.onLoginSuccess();
     }
 

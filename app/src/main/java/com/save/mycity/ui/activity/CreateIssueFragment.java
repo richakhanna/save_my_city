@@ -1,8 +1,12 @@
 package com.save.mycity.ui.activity;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -31,6 +35,8 @@ public class CreateIssueFragment extends Fragment implements View.OnClickListene
   private ImageView mCamImage;
   private EditText mEditText;
   private TextView mDate;
+  private ImageView mImageView;
+  static final int REQUEST_IMAGE_CAPTURE = 1;
 
   public static CreateIssueFragment newInstance() {
     CreateIssueFragment fragment = new CreateIssueFragment();
@@ -56,7 +62,7 @@ public class CreateIssueFragment extends Fragment implements View.OnClickListene
 
   @Nullable @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.activity_category, container, false);
+    View view = inflater.inflate(R.layout.fragment_create_issue, container, false);
     mSharedPreferences =
         mContext.getSharedPreferences(Constants.PREFERENCE_NAME, Context.MODE_PRIVATE);
     mSaveButton = (FloatingActionButton) view.findViewById(R.id.save);
@@ -66,10 +72,19 @@ public class CreateIssueFragment extends Fragment implements View.OnClickListene
     mDate = (TextView) view.findViewById(R.id.date);
     mEditText = (EditText) view.findViewById(R.id.edit_text);
     mCamImage = (ImageView) view.findViewById(R.id.camera_img);
+    mCamImage.setOnClickListener(this);
 
     setCurrentLocation();
     mDate.setText(getCurrentDate());
+    mImageView = (ImageView) view.findViewById(R.id.iv_thumbnail);
     return view;
+  }
+
+  private void dispatchTakePictureIntent() {
+    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+    if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+      startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+    }
   }
 
   private void setCurrentLocation() {
@@ -89,8 +104,20 @@ public class CreateIssueFragment extends Fragment implements View.OnClickListene
   @Override public void onClick(View v) {
     switch (v.getId()) {
       case R.id.save:
-        Toast.makeText(mContext, " You will be heard! ", Toast.LENGTH_SHORT);
+        Toast.makeText(mContext, " You will be heard! ", Toast.LENGTH_SHORT).show();
         break;
+      case R.id.camera_img:
+        dispatchTakePictureIntent();
+        break;
+    }
+  }
+
+  @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+      Bundle extras = data.getExtras();
+      Bitmap imageBitmap = (Bitmap) extras.get("data");
+      mImageView.setImageBitmap(imageBitmap);
+      mImageView.setVisibility(View.VISIBLE);
     }
   }
 }
