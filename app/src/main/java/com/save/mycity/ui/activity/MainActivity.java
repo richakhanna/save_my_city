@@ -103,25 +103,17 @@ public class MainActivity extends AppCompatActivity
     Fragment fragment = fragmentManager.findFragmentById(R.id.main_fragment_container);
 
     if (id == R.id.nav_report) {
-      if (fragment instanceof MyCityMapFragment) {
+      if (!(fragment instanceof MyCityMapFragment)) {
         fragmentManager.beginTransaction()
             .replace(R.id.main_fragment_container,
                 MyCityMapFragment.newInstance(mLocation.latitude, mLocation.longitude))
             .commit();
       }
-    } else if (id == R.id.nav_gallery) {
-
-    } else if (id == R.id.nav_slideshow) {
-
     } else if (id == R.id.nav_manage) {
       fragmentManager.beginTransaction()
           .replace(R.id.main_fragment_container, PartnerListFragment.newInstance())
           .addToBackStack("TAG")
           .commit();
-    } else if (id == R.id.nav_share) {
-
-    } else if (id == R.id.nav_send) {
-
     }
 
     drawer.closeDrawer(GravityCompat.START);
