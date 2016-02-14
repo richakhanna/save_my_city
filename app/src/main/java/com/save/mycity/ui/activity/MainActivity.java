@@ -107,6 +107,7 @@ public class MainActivity extends AppCompatActivity
         .replace(R.id.main_fragment_container, LoginFragment.newInstance("hello", "world"))
         .addToBackStack(null)
         .commit();
+
   }
 
   @Override public void onLoginSuccess() {
